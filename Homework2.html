@@ -6,17 +6,16 @@
     <title>
       Homework2
     </title>
-    <link href="../01_29_css.css" rel="stylesheet">
+
   </head>
 
   <body bgcolor="lightgrey">
     <a href="https://www.google.com">Here is a link to google!</a>
     <!-- This is comic sans -->
-    <p class="comicsans">
+    <p>
       Welcome to my page. Here we will talk about styles.
     </p>
-    <h2 class="comicsans" id="redParagraph">
-      Here's another paragraph.
+    <h2>
     </h2>
     <script>
 
@@ -43,6 +42,14 @@
         return x;
       }
 
+      var person = prompt("Please enter your name", "Harry Potter");
+
+
+
+      if (person != null) {
+          document.getElementById("demo").innerHTML =
+          "Hello " + person + "!";
+      }
 
     </script>
   </body>
