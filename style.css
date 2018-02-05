@@ -1,0 +1,12 @@
+p{
+  color:blue;
+  font-size:32px;
+}
+
+p#redParagraph {
+   color: red;
+   font-size: 32px;
+
+.comics {
+  font-family: "Comic Sans MS";
+}
