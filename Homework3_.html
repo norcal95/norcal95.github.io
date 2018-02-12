@@ -6,8 +6,6 @@
             button  {float:right}
         </style>
 
-         <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
-
         <style>
             svg {width:1500px; height:1000px}
             line    {stroke:#ddd;shape-rendering: crispEdges;}
@@ -17,7 +15,7 @@
             .axis path  {fill:none;}
             .axis text {font-size:0.7em;fill:#555;font-family:sans-serif}
         </style>
-        <script src="http://d3js.org/d3.v3.js"></script>
+        <script src="https://d3js.org/d3.v3.js"></script>
     </head>
     <body>
 
@@ -28,13 +26,6 @@
                     <DIV style="position: absolute; top:250px; left:810px; width:200px; height:25px; color:black;">Soviet Union</DIV>
                         <DIV style="position: absolute; top:250px; left:990px; width:200px; height:25px; color:red;">United States</DIV>
         <script>
-
-        var tooltip = d3.select("body")
-	.append("div")
-	.style("position", "absolute")
-	.style("z-index", "10")
-	.style("visibility", "hidden")
-	.text("a simple tooltip");
 
         var body = d3.select("body")
           .style("background-color", "lightgrey")
@@ -83,12 +74,7 @@
                 })
                 .attr("cy",yBuffer)
                 .attr("r",function(d,i){return d});
-
-
-                d3.select(".svgDoc")
-              .on("mouseover", function(){return tooltip.style("visibility", "visible");})
-              .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-              .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+		
 
             //button to swap over datasets
             d3.select("body").append("button")
