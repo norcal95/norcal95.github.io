@@ -1,0 +1,137 @@
+<!doctype html>
+
+<html>
+    <head>
+        <style>
+            button  {float:right}
+        </style>
+
+         <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+
+        <style>
+            svg {width:1500px; height:1000px}
+            line    {stroke:#ddd;shape-rendering: crispEdges;}
+            text    {text-anchor:middle;}
+            circle {fill:purple;stroke:black;fill-opacity:0.5;}
+            .axis line {fill:none;stroke:#ddd;shape-rendering: crispEdges;}
+            .axis path  {fill:none;}
+            .axis text {font-size:0.7em;fill:#555;font-family:sans-serif}
+        </style>
+        <script src="http://d3js.org/d3.v3.js"></script>
+    </head>
+    <body>
+
+      <DIV style="position: absolute; top:250px; left:150px; width:200px; height:25px; color:blue;">Canada</DIV>
+        <DIV style="position: absolute; top:250px; left:330px; width:200px; height:25px; color:yellow;">Germany</DIV>
+            <DIV style="position: absolute; top:250px; left:490px; width:200px; height:25px; color:black;">Netherlands</DIV>
+                <DIV style="position: absolute; top:250px; left:650px; width:200px; height:25px; color:green;">Norway</DIV>
+                    <DIV style="position: absolute; top:250px; left:810px; width:200px; height:25px; color:black;">Soviet Union</DIV>
+                        <DIV style="position: absolute; top:250px; left:990px; width:200px; height:25px; color:red;">United States</DIV>
+        <script>
+
+        var tooltip = d3.select("body")
+	.append("div")
+	.style("position", "absolute")
+	.style("z-index", "10")
+	.style("visibility", "hidden")
+	.text("a simple tooltip");
+
+        var body = d3.select("body")
+          .style("background-color", "lightgrey")
+          .style("font-family", "Georgia")
+          .attr("id", "myBody");
+
+            //2 different data arrays
+            //Canada, Germany, Netherlands, Norway, SU, US
+            //Current Pyeongchang 2018 winter medal count times 10 as of 2/12/18 12:00pm
+            var dataArray1 = [70, 70, 70, 90, 0, 40];
+            //Alltime Winter Medal Count
+            var dataArray2 = [170, 209, 0, 329, 193, 282];
+            //Current Pyeongchang 2018 winter medal count
+
+
+            //globals
+            var dataIndex=1;
+            var xBuffer=180;
+            var yBuffer=600;
+            var lineLength=1000;
+
+
+            //create main svg element
+            var svgDoc = d3.select("body").append("svg")
+
+            svgDoc.append("text")
+                .attr("x",xBuffer+(lineLength/2))
+                .attr("y",100)
+                .text("~~Current 2018 Winter Olympic Medal Standings~~");
+
+            //create axis line
+            svgDoc.append("line")
+                .attr("x1",xBuffer)
+                .attr("y1",yBuffer)
+                .attr("x1",xBuffer+lineLength)
+                .attr("y2",yBuffer)
+
+            //create basic circles
+            svgDoc.append("g").selectAll("circle")
+                .data(eval("dataArray"+dataIndex))
+                .enter()
+                .append("circle")
+                .attr("cx",function(d,i){
+                    var spacing = lineLength/(eval("dataArray"+dataIndex).length);
+                    return xBuffer+(i*spacing)
+                })
+                .attr("cy",yBuffer)
+                .attr("r",function(d,i){return d});
+
+
+                d3.select(".svgDoc")
+              .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+              .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+              .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+            //button to swap over datasets
+            d3.select("body").append("button")
+                .text("See All-Time Standings")
+                .on("click",function(){
+                    //select new data
+                    if (dataIndex==1) {
+                        dataIndex=2;
+                    } else   {
+                        dataIndex=1;
+                    }
+                    //rejoin data
+                    var circle = svgDoc.select("g").selectAll("circle")
+                        .data(eval("dataArray"+dataIndex));
+
+                    circle.exit().remove();//remove unneeded circles
+                    circle.enter().append("circle")
+                        .attr("r",0);//create any new circles needed
+
+                    //update all circles to new positions
+                    circle.transition()
+                        .duration(500)
+                        .attr("cx",function(d,i){
+                            var spacing = lineLength/(eval("dataArray"+dataIndex).length);
+                            return xBuffer+(i*spacing)
+                        })
+                        .attr("cy",yBuffer)
+                        .attr("r",function(d,i){return d});
+
+                    d3.select("text").text("~~All Time Winter Olympic Medal Standings~~");
+
+
+
+
+
+                });//end click function
+
+
+        </script>
+    </body>
+</html>
+
+
+    </script>
+  </body>
+</html>
