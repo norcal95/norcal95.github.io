@@ -7,8 +7,106 @@
   </head>
   <body id="myBody">
     <svg id="viz"></svg>
-    <svg id="viz"></svg>
-    <svg id="viz"></svg>
   </body>
+
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+
+  <script>
+
+  var body = document.getElementById("myBody");
+  body.style.backgroundColor = "red";
+  body.style.fontFamily = "Comic Sans MS";
+  body.id = "newId"
+
+  var body = d3.select("body")
+    .style("background-color", "salmon")
+    .style("font-family", "Times New Roman")
+    .attr("id", "myBody");
+
+    var myData = [100, 100, 100, 100, 100];
+    var newData = [252.2, 101, 84.7, 54.1, 71.4];
+    //var newestData = [35, 10, 13, 25];
+
+
+          var drawCircles = function(dataArray) {
+
+            var svg = d3.select("#viz");
+
+            var dots = svg.selectAll(".dot")
+              .data(dataArray);
+
+            //enter circles
+            dots.enter().append("circle")
+              .transition()
+              .duration(1000)
+              .attr("r", 0)
+              .attr("class", "dot")
+              .attr("r", function(dataPoint) {
+                return dataPoint / 2;
+              })
+              .attr("fill", "black")
+              .attr("cx", function(dataPoint, index) {
+                return 100 + (index * 100);
+              })
+              .attr("cy", 300);
+
+            //update circles
+            dots
+                .transition()
+                .duration(1000)
+                .attr("r", function(dataPoint) {
+                  return dataPoint / 2;
+              })
+              .attr("fill", "green");
+
+            //exit circles
+            dots.exit()
+              .transition()
+              .duration(1000)
+              .attr("r", 0)
+              .remove();
+          };
+
+          drawCircles(myData)
+
+          svg.on("click", function() {
+          var coords = d3.mouse(this);
+
+})
+        var myData= {
+            drawCircles(myData)
+
+        svg.on("click", drawCircles(newData));
+
+      }
+
+
+        </script>
+
+    /*    <button type="button">Click Me!</button>
+
+        // On Click, we want to add data to the array and chart
+   svg.on("click", function() {
+       var coords = d3.mouse(this);
+
+       // Normally we go from data to pixels, but here we're doing pixels to data
+       var newData= {
+         x: Math.round( xScale.invert(coords[0])),  // Takes the pixel number to convert to number
+         y: Math.round( yScale.invert(coords[1]))
+       };
+
+       dataset.push(newData);   // Push data to our array
+
+       svg.selectAll("circle")  // For new circle, go through the update process
+         .data(dataset)
+         .enter()
+         .append("circle")
+         .attr(circleAttrs)  // Get attributes from circleAttrs var
+         .on("mouseover", handleMouseOver)
+         .on("mouseout", handleMouseOut);
+     }) */
+
+
+</html>
 
 //use a "when clicked thing"
