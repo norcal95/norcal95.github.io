@@ -5,19 +5,46 @@
     <meta charset="utf-8" />
     <title>Scales!</title>
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <style>
+      body {
+          margin: 0;
+      }
+      #tooltip {
+        background-color: "white"
+        border: 1px solid black;
+        display: none;
+        position: absolute;
+        padding: 10px;
+
+      }
+    </style>
   </head>
 
   <body id="myBody">
-    <svg id="viz"></svg>
+    <svg id="viz">
+      <g id="xAxis"></g>
+    </svg>
+    <div id="tooltip"></div>
   </body>
 
     <script>
 
-      var distances = [0.2, 1.2, 0.7, 4, 3]
+      var distances = [
+        {name: "store", distance: 0.2},
+        {name: "school", distance:1.2},
+        {name: "family", distance:0.7},
+        {name: "friend", distance:4},
+        {name: "work", distance:3}
+      ];
+      var padding = 100;
+
+      var maxDistance = d3.max(distances, function(d) {
+        return d.distance;
+      })
 
       var xScale = d3.scaleLinear()
-        .domain([0, d3.max(distances)])
-        .range([0, window.innerWidth]);
+        .domain([0, maxDistance])
+        .range([padding, window.innerWidth - padding * 2]);
 
       var svg = d3.select("#viz")
         .attr("width", window.innerWidth)
@@ -30,10 +57,26 @@
         .attr("cx", 0)
         .attr("cy", 100)
         .attr("r", 20)
+        .on("mouseenter", function(d) {
+          d3.select("#tooltip")
+            .style("display", "block")
+            .style("top","130px")
+            .style("left",xScale(d.distance) + "px")
+            .text(d.name);
+        })
+        .on("mouseleave", function(d) {
+          d3.select("#tooltip")
+            .style("display", "none");
+        })
         .transition().duration(1500)
           .attr("cx", function(d) {
-            return xScale(d);
+            return xScale(d.distance);
           });
+
+        var xAxis = d3.axisBottom(xScale);
+        d3.select("g#xAxis")
+          .attr("transofrm", "translate (0, 150)")
+          .call(xAxis);
 
     </script>
 
