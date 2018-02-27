@@ -3,7 +3,7 @@
 
   <head>
     <meta charset="utf-8" />
-    <title>Loading Data</title>
+    <title>Scales!</title>
     <script src="https://d3js.org/d3.v4.min.js"></script>
   </head>
 
@@ -13,8 +13,28 @@
 
     <script>
 
-      var distances = [0.2, 1.2, 0.7, 4]
-      
+      var distances = [0.2, 1.2, 0.7, 4, 3]
+
+      var xScale = d3.scaleLinear()
+        .domain([0, d3.max(distances)])
+        .range([0, window.innerWidth]);
+
+      var svg = d3.select("#viz")
+        .attr("width", window.innerWidth)
+        .attr("height", window.innerHeight);
+
+      var circles = svg.selectAll("circle")
+        .data(distances);
+
+      circles.enter().append("circle")
+        .attr("cx", 0)
+        .attr("cy", 100)
+        .attr("r", 20)
+        .transition().duration(1500)
+          .attr("cx", function(d) {
+            return xScale(d);
+          });
+
     </script>
 
   </html>
