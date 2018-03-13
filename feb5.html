@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -78,3 +79,85 @@
 
 
 </html>
+=======
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>Javascript Libraries</title>
+  </head>
+
+  <body id="myBody">
+    <svg id="viz"></svg>
+  </body>
+    <script src="numbers.js"></script>
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <script>
+      var y = numbers.squared(22);
+      console.log(y);
+      var x = numbers.plus10(2);
+      console.log(x);
+
+      var body = document.getElementById("myBody");
+      body.style.backgroundColor = "red";
+      body.style.fontFamily = "Comic Sans MS";
+      body.id = "newId"
+
+      var body = d3.select("body")
+        .style("background-color", "salmon")
+        .style("font-family", "Times New Roman")
+        .attr("id", "myBody");
+
+      var myData = [30, 12, 16, 7, 20];
+      var newData = [15, 50, 5];
+      var newestData = [35, 10, 13, 25];
+
+      var drawCircles = function(dataArray) {
+
+        var svg = d3.select("#viz");
+
+        var dots = svg.selectAll(".dot")
+          .data(dataArray);
+
+        //enter circles
+        dots.enter().append("circle")
+          .transition()
+          .duration(1000)
+          .attr("r", 0)
+          .attr("class", "dot")
+          .attr("r", function(dataPoint) {
+            return dataPoint / 2;
+          })
+          .attr("fill", "black")
+          .attr("cx", function(dataPoint, index) {
+            return 25 + (index * 50);
+          })
+          .attr("cy", 25);
+
+        //update circles
+        dots
+            .transition()
+            .duration(1000)
+            .attr("r", function(dataPoint) {
+              return dataPoint / 2;
+          })
+          .attr("fill", "green");
+
+        //exit circles
+        dots.exit()
+          .transition()
+          .duration(1000)
+          .attr("r", 0)
+          .remove();
+      };
+
+      drawCircles(myData)
+
+      </script>
+
+
+</html>
+>>>>>>> 1ec3152f64c0d44626d48eaf1dbf4614e06e2a9c
