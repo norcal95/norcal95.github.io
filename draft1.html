@@ -64,6 +64,17 @@
       console.log(dataArray);
     });
 
+    d3.json(queue[0] function(error, data) {
+      console.log(data);
+      var geoJSON = topojson.feature(data, data.objects.states);
+      console.log(geoJSON);
+
+    var proj = d3.geoAlbersUsa()
+      .fitSize([600, 400], geoJSON);
+
+    var path = d3.geoPath()
+      .projection(proj);
+
 
 
     </script>
