@@ -58,8 +58,12 @@
     var queue = d3.queue();
     districts.forEach(function(district) {
       queue.defer(d3.json, "va-congressional-districts/Virginia_"+district+".geojson");
-      console.log(queue);
-    })
+    });
+
+    queue.awaitAll(function(error, dataArray) {
+      console.log(dataArray);
+    });
+
 
 
     </script>
