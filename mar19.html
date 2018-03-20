@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>MAP!</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <style>
+
+    </style>
+  </head>
+
+  <body>
+    <svg id="map" width=600 height=400>
+        <rect width=600 height=400 color="cornflowerblue"></rect>
+    </svg>
+  </body>
+
+    <script>
+
+      d3.queue()
+        .defer(d3.json, "US_states.json")
+        .defer(d3.csv, "dataTable.csv")
+        .defer(d3.text, "textData.txt")
+        .awaitAll(function(error, dataArray) {
+          var jsonData = dataArray[0];
+          var csvData = dataArray[1];
+          var textData = dataArray[2];
+          console.log(dataArray);
+        })
+
+      d3.json("US_states.json", function(error, data) {
+        console.log(data);
+        var geoJSON = topojson.feature(data, data.objects.states);
+        console.log(geoJSON);
+
+      var proj = d3.geoAlbersUsa()
+        .fitSize([600, 400], geoJSON);
+
+      var path = d3.geoPath()
+        .projection(proj);
+
+      geoJSON.features = geoJSON.features.filter(function(feature) {
+        return feature.id != "AQ";
+      });
+
+      var states = d3.select("#map").selectAll("path")
+        .data(geoJSON.features);
+
+      states.enter().append("path")
+        .attr("fill","forrestgreen");
+          if (feature.id = "VA") {
+            return "red";
+          }
+          else {
+            return "forrestgreen";
+          }
+        })
+        .attr("stroke-width", 1);
+        attr("stroke","white");
+        attr("d", function(feature) {
+        return path(feature);
+    })
+
+    var points = [
+      {"name": "Boston", "coords": [-71.0589, 42.3601]},
+      {"name": "London", "coords": [-0.1278, 51.5074]}
+    ];
+
+    var dots = d3.select().append("circle")
+      .attr("transform", function(point) {
+        return "translate( " + proj(point.coords)  + ")"
+      })
+      .attr("fill", "black")
+      .attr("r", 10);
+
+      ;
+
+    </script>
+
+  </html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>Draft1</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <style>
+
+    </style>
+  </head>
+
+  <body>
+    <svg id="map" width=600 height=400>
+        <rect width=600 height=400 color="cornflowerblue"></rect>
+    </svg>
+  </body>
+
+    <script>
+
+    var districts = [
+      "1_to_2",
+      "3_to_7",
+      "8_to_9",
+      "10_to_12",
+      "13_to_17",
+      "18_to_18",
+      "19_to_22",
+      "23_to_24",
+      "25_to_25",
+      "26_to_27",
+      "28_to_29",
+      "30_to_31",
+      "32_to_32",
+      "33_to_35",
+      "36_to_36",
+      "37_to_37",
+      //Civil War Gap (?)
+      "41_to_42",
+      "43_to_47",
+      "48_to_48",
+      "49_to_52",
+      "53_to_60",
+      "61_to_62",
+      "63_to_72",
+      "73_to_73",
+      "74_to_82",
+      "83_to_89",
+      "90_to_92",
+      "93_to_97",
+      "98_to_102",
+      "103_to_103",
+      "104_to_105",
+      "106_to_107",
+      "108_to_112",
+    ];
+
+    var queue = d3.queue();
+    districts.forEach(function(district) {
+      queue.defer(d3.json, "va-congressional-districts/Virginia_"+district+".geojson");
+      console.log(queue);
+    })
+
+
+    </script>
+
+  </html>
