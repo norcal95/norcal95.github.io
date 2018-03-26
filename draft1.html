@@ -12,7 +12,7 @@
 
   <body>
     <svg id="map" width=600 height=400>
-        <rect width=600 height=400 color="cornflowerblue"></rect>
+        <rect width=600 height=400 color="cornflowerBlue"></rect>
     </svg>
   </body>
 
@@ -64,10 +64,14 @@
       console.log(dataArray);
     });
 
-    d3.json(queue[0] function(error, data) {
+    d3.json(queue[0]), function(error, data) {
       console.log(data);
       var geoJSON = topojson.feature(data, data.objects.states);
       console.log(geoJSON);
+
+      svg.append("path")
+        .datum(topojson.feature(district, geoJSON))
+        .attr("d", d3.geo.path().projection(d3.geoAlbersUsa()));
 
     var proj = d3.geoAlbersUsa()
       .fitSize([600, 400], geoJSON);
@@ -75,6 +79,16 @@
     var path = d3.geoPath()
       .projection(proj);
 
+    var district = svg.selectAll("path")
+      .data(geoJSON.features);
+
+    district.enter().append("path")
+      .attr("d", function(d) {
+      return path(d);
+    });
+
+
+    };
 
 
     </script>
