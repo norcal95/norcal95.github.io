@@ -3,20 +3,85 @@
 
   <head>
     <meta charset="utf-8" />
-    <title>Draft1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Final Project</title>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <style>
+    /* Center the loader, from W3 */
+    #loader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
 
-    </style>
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Add animation to "page content" */
+    .animate-bottom {
+      position: relative;
+      -webkit-animation-name: animatebottom;
+      -webkit-animation-duration: 1s;
+      animation-name: animatebottom;
+      animation-duration: 1s
+    }
+
+    @-webkit-keyframes animatebottom {
+      from { bottom:-100px; opacity:0 }
+      to { bottom:0px; opacity:1 }
+    }
+
+    @keyframes animatebottom {
+      from{ bottom:-100px; opacity:0 }
+      to{ bottom:0; opacity:1 }
+    }
+
+    #myDiv {
+      display: none;
+      text-align: center;
+    }
+</style>
+
   </head>
 
-  <body>
+  <body onload="myFuction()" style="margin:0;">
     <svg id="map" width=600 height=400>
-        <rect width=600 height=400 color="cornflowerBlue"></rect>
+        <rect width=600 height=400 fill="cornflowerBlue"></rect>
+        <div class="loader"></div>
     </svg>
-  </body>
 
+
+      <div id="loader"></div>
     <script>
+
+    var myVar;
+
+    function myFunction() {
+      myVar = setTimeout(showPage, 3000);
+    }
+
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("myDiv").style.display = "block";
+    }
 
     var districts = [
       "1_to_2",
@@ -60,37 +125,43 @@
       queue.defer(d3.json, "va-congressional-districts/Virginia_"+district+".geojson");
     });
 
+    var geoJSONS = [];
     queue.awaitAll(function(error, dataArray) {
-      console.log(dataArray);
+      geoJSONS = dataArray;
+        // done loading!
+      showPage();
+      redraw("108_to_112");
     });
 
-    d3.json(queue[0]), function(error, data) {
-      console.log(data);
-      var geoJSON = topojson.feature(data, data.objects.states);
-      console.log(geoJSON);
+    var svg = d3.select("#map");
 
-      svg.append("path")
-        .datum(topojson.feature(district, geoJSON))
-        .attr("d", d3.geo.path().projection(d3.geoAlbersUsa()));
+    function redraw(district) {
 
-    var proj = d3.geoAlbersUsa()
-      .fitSize([600, 400], geoJSON);
+      var index = districts.indexOf(district);
+      var geoJSON = geoJSONS[index];
+      console.log(district, index, geoJSON);
 
-    var path = d3.geoPath()
-      .projection(proj);
+      var proj = d3.geoMercator()
+        .fitSize([600, 400], geoJSON);
 
-    var district = svg.selectAll("path")
-      .data(geoJSON.features);
+      var pathGenerator = d3.geoPath()
+        .projection(proj);
 
-    district.enter().append("path")
-      .attr("d", function(d) {
-      return path(d);
-    });
+      var updatePaths = svg.selectAll("path")
+        .data(geoJSON.features);
 
+      var enterPaths = updatePaths.enter()
+        .append("path");
 
-    };
+      updatePaths.merge(enterPaths)
+        .attr("d", function(d) {
+          return pathGenerator(d);
+        })
+        .attr("fill","none")
+        .attr("stroke","red");
+    }
 
 
     </script>
-
+  </body>
   </html>
