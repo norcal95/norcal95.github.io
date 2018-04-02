@@ -67,7 +67,7 @@
 
 
     <div class="slidecontainer">
-      <input type="range" min="0" max="32" value="0" class="slider" id="myRange">
+      <input type="range" min="0" max="32" value="32" class="slider" id="myRange">
       <p>Year: <span id="demo"></span></p>
     </div>
 
@@ -162,15 +162,12 @@
 
         slider.oninput = function() {
           output.innerHTML = this.value;
+          var year = parseInt(this.value, 10);
+          redraw(districts[year]);
         }
-
-        document.getElementById('myRange').addEventListener('input', function(e) {
-          var year = parseInt(e.this.value, 10);
-          redraw(year);
-        });
 
         /*end slider*/
 
     </script>
-  </body>
+  <!--</body>-->
   </html>
