@@ -4,7 +4,7 @@
     <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Final Project</title>
+    <title>Final Project Workspace</title>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <style>
       div.a {
@@ -67,7 +67,7 @@
 
 
     <div class="slidecontainer">
-      <input type="range" min="0" max="32" value="32" class="slider" id="myRange">
+      <input type="range" min="0" max="109" value="109" class="slider" id="myRange">
       <p>Year: <span id="demo"></span></p>
     </div>
 
@@ -78,94 +78,125 @@
 
     var districts = [
       "1_to_2",
+      "1_to_2",
+      "3_to_7",
+      "3_to_7",
+      "3_to_7",
+      "3_to_7",
       "3_to_7",
       "8_to_9",
+      "8_to_9",
       "10_to_12",
+      "10_to_12",
+      "10_to_12",
+      "13_to_17",
+      "13_to_17",
+      "13_to_17",
+      "13_to_17",
       "13_to_17",
       "18_to_18",
       "19_to_22",
+      "19_to_22",
+      "19_to_22",
+      "19_to_22",
+      "23_to_24",
       "23_to_24",
       "25_to_25",
       "26_to_27",
+      "26_to_27",
+      "28_to_29",
       "28_to_29",
       "30_to_31",
+      "30_to_31",
       "32_to_32",
+      "33_to_35",
+      "33_to_35",
       "33_to_35",
       "36_to_36",
       "37_to_37",
       //Civil War Gap (?)
       "41_to_42",
+      "41_to_42",
+      "43_to_47",
+      "43_to_47",
+      "43_to_47",
+      "43_to_47",
       "43_to_47",
       "48_to_48",
       "49_to_52",
+      "49_to_52",
+      "49_to_52",
+      "49_to_52",
+      "53_to_60",
+      "53_to_60",
+      "53_to_60",
+      "53_to_60",
+      "53_to_60",
+      "53_to_60",
+      "53_to_60",
       "53_to_60",
       "61_to_62",
+      "61_to_62",
+      "63_to_72",
+      "63_to_72",
+      "63_to_72",
+      "63_to_72",
+      "63_to_72",
+      "63_to_72",
+      "63_to_72",
+      "63_to_72",
+      "63_to_72",
       "63_to_72",
       "73_to_73",
       "74_to_82",
+      "74_to_82",
+      "74_to_82",
+      "74_to_82",
+      "74_to_82",
+      "74_to_82",
+      "74_to_82",
+      "74_to_82",
+      "74_to_82",
+      "83_to_89",
+      "83_to_89",
+      "83_to_89",
+      "83_to_89",
+      "83_to_89",
+      "83_to_89",
       "83_to_89",
       "90_to_92",
+      "90_to_92",
+      "90_to_92",
       "93_to_97",
+      "93_to_97",
+      "93_to_97",
+      "93_to_97",
+      "93_to_97",
+      "98_to_102",
+      "98_to_102",
+      "98_to_102",
+      "98_to_102",
       "98_to_102",
       "103_to_103",
       "104_to_105",
+      "104_to_105",
+      "106_to_107",
       "106_to_107",
       "108_to_112",
+      "108_to_112",
+      "108_to_112",
+      "108_to_112",
+      "108_to_112",
     ];
-
-    var congress2year = {
-      "1_to_2":	1789,
-      "3_to_7":	1793,
-      "8_to_9":	1803,
-      "10_to_12":	1807,
-      "13_to_17":	1813,
-      "18_to_18":	1823,
-      "19_to_22":	1825,
-      "23_to_24":	1833,
-      "25_to_25":	1837,
-      "26_to_27":	1839,
-      "28_to_29":	1843,
-      "30_to_31":	1847,
-      "32_to_32":	1851,
-      "33_to_35":	1853,
-      "36_to_36":	1859,
-      "37_to_37":	1861,
-      //Civil War Gap (?)
-      "41_to_42":	1869,
-      "43_to_47":	1873,
-      "48_to_48":	1883,
-      "49_to_52":	1885,
-      "53_to_60":	1893,
-      "61_to_62":	1909,
-      "63_to_72":	1913,
-      "73_to_73":	1933,
-      "74_to_82":	1935,
-      "83_to_89":	1953,
-      "90_to_92":	1967,
-      "93_to_97":	1973,
-      "98_to_102": 1983,
-      "103_to_103":	1993,
-      "104_to_105":	1995,
-      "106_to_107":	1999,
-      "108_to_112": 2003
-    };
 
     var queue = d3.queue();
     districts.forEach(function(district) {
       queue.defer(d3.json, "va-congressional-districts/Virginia_"+district+".geojson");
     });
 
-
-
-    var proj = d3.geoMercator();
-
-    var pathGenerator = d3.geoPath()
-      .projection(proj);
-
     var geoJSONS = [];
     queue.awaitAll(function(error, dataArray) {
       geoJSONS = dataArray;
-      proj.fitSize([600, 400], geoJSONS[12]);
         // done loading!
       redraw("108_to_112");
     });
@@ -177,6 +208,12 @@
       var index = districts.indexOf(district);
       var geoJSON = geoJSONS[index];
       console.log(district, index, geoJSON);
+
+      var proj = d3.geoMercator()
+        .fitSize([600, 400], geoJSON);
+
+      var pathGenerator = d3.geoPath()
+        .projection(proj);
 
       var updatePaths = svg.selectAll("path")
         .data(geoJSON.features);
@@ -190,8 +227,6 @@
         })
         .attr("fill","none")
         .attr("stroke","red");
-
-      updatePaths.exit().remove();
     }
 
         /*start slider*/
@@ -202,14 +237,20 @@
         districtmap.innerHTML = districtmap.value;
 
         slider.oninput = function() {
+          output.innerHTML = this.value;
           var year = parseInt(this.value, 10);
           redraw(districts[year]);
-          output.innerHTML = congress2year[districts[year]];
+          //output.innerHTML = year + 1791;
         }
 
         /*end slider*/
-        /*issue at "1806" or "15" causing all types of problems*/
-
+        /*issue: below 39 if I pull the slider right again it redraws over the old map*/
+        /*add a tooltip whenever the mouse is on the timeline*/
+        /*a button to make a steady slideshow?*/
+        /*clickable districts for the current map and then*/
+          /*party breakdown of state delegates or*/
+          /*info on the 2018 candidates and*/
+            /*how secure their seats are something like that?*/
     </script>
   <!--</body>-->
   </html>
