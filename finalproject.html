@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Final Project</title>
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <style>
       div.a {
           text-align: center;
@@ -59,6 +60,29 @@
   </head>
 
   <body>
+
+    <!--trying this loader START-->
+    <style>
+    #overlay {
+        background: #ffffff;
+        color: #666666;
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        z-index: 5000;
+        top: 0;
+        left: 0;
+        float: left;
+        text-align: center;
+        padding-top: 25%;
+    }
+      </style>
+      <div id="overlay">
+          <!-- <img src="loader.gif" alt="Loading" /><br/> -->
+          Loading...
+      </div>
+      <!--trying this loader END-->
+
     <h1>Gerrymandering in Virginia</h1>
     <div class="a">
     <svg id="map" width=600 height=400>
@@ -73,6 +97,15 @@
     </div>
 
     <p1>click along the slider to see the Virginia congressional district lines change over time from 1789 to 2003</p1>
+
+    <!--trying this loader part II start-->
+    <!-- <script>
+      jQuery(window).load(function(){
+      jQuery('#overlay').fadeOut();
+      });
+    </script> -->
+    <!--trying this loader part II end-->
+
   </body>
 
     <script>
@@ -168,6 +201,10 @@
       geoJSONS = dataArray;
       proj.fitSize([600, 400], geoJSONS[12]);
         // done loading!
+        jQuery(window).load(function(){
+        jQuery('#overlay').fadeOut();
+        });
+        //end
       redraw("108_to_112");
     });
 
@@ -207,8 +244,11 @@
           if (republicans > democrats) {
             return "red";
           }
-          else {
+          else if (democrats > republicans) {
             return "blue";
+          }
+          else {
+            return "gray";
           }
         })
         .attr("stroke","black");
@@ -239,7 +279,11 @@
         /*add a loader*/
         /*make the slider prettier*/
         /*change the red stroke to black and color republicans red and dems blue and tied districts purple*/
+        /*is the gray a good idea?*/
+        /*put a key*/
         /*write some ~more~ stuff*/
+        /*include stuff about the earlier parties, the dixiecrat switch after the 1964 voting rights, the latest scuffle over redistircitng*/
+        /*check on 1933*/
 
     </script>
 
