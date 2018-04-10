@@ -67,11 +67,12 @@
 
 
     <div class="slidecontainer">
-      <input type="range" min="0" max="32" value="32" class="slider" id="myRange">
+      <input type="range" min="0" max="32" value="2003" class="slider" id="myRange">
       <p>Year: <span id="demo"></span></p>
+
     </div>
 
-    <p1>click along the slider to see the Virginia congressional district lines change over time from 1791 to 2003</p1>
+    <p1>click along the slider to see the Virginia congressional district lines change over time from 1789 to 2003</p1>
   </body>
 
     <script>
@@ -188,12 +189,28 @@
         .attr("d", function(d) {
           return pathGenerator(d);
         })
-        var color = "red";
-        var party = feature.getProperty('party');
-        if (party = "Democrat") {
-          color = "blue"
-        }
-        attr("fill", color)
+        .attr("fill", function(d) {
+          var democrats = 0;
+          var republicans = 0;
+          var congresses = d.properties.member;
+          for (var congress in congresses) {
+            for (var person in congresses[congress]) {
+              var party = congresses[congress][person].party;
+              if (party == "Democrat") {
+                democrats += 1;
+              }
+              if (party == "Republican") {
+                republicans += 1;
+              }
+            }
+          }
+          if (republicans > democrats) {
+            return "red";
+          }
+          else {
+            return "blue";
+          }
+        })
         .attr("stroke","black");
 
       updatePaths.exit().remove();
@@ -203,7 +220,7 @@
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
         var districtmap = document.getElementById("map");
-        output.innerHTML = slider.value;
+        output.innerHTML = parseInt(slider.value) + 1971;
         districtmap.innerHTML = districtmap.value;
 
         slider.oninput = function() {
@@ -211,69 +228,19 @@
           redraw(districts[year]);
           output.innerHTML = congress2year[districts[year]];
 
-        }
+        //}
 
         /*end slider*/
 
-        /*start of trying to color the districts*/
-        map.data.setStyle(function(feature) {
-        var SD_PARTY = feature.getProperty('SD_PARTY');
-        var color = "gray";
-        if (SD_PARTY == "Democrat") {
-          color = "blue";
-        }
-        return {
-          fillColor: color,
-          strokeWeight: 1
-        }
-      });
 
-        var states = [{
-        "type": "Feature",
-        "properties": {"party": "Republican"},
-        "geometry": {
-            "type": "Polygon",
-            "coordinates": [[
-                [-104.05, 48.99],
-                [-97.22,  48.98],
-                [-96.58,  45.94],
-                [-104.03, 45.94],
-                [-104.05, 48.99]
-            ]]
-        }
-        }, {
-        "type": "Feature",
-        "properties": {"party": "Democrat"},
-        "geometry": {
-            "type": "Polygon",
-            "coordinates": [[
-                [-109.05, 41.00],
-                [-102.06, 40.99],
-                [-102.03, 36.99],
-                [-109.04, 36.99],
-                [-109.05, 41.00]
-            ]]
-        }
-        }];
-
-        L.geoJson(states, {
-        style: function(feature) {
-            switch (feature.properties.party) {
-                case 'Republican': return {color: "#ff0000"};
-                case 'Democrat':   return {color: "#0000ff"};
-            }
-        }
-        }).addTo(map);
-
-        /*end of coloring the districts*/
+      };
 
 
         /*add a loader*/
         /*make the slider prettier*/
         /*change the red stroke to black and color republicans red and dems blue and tied districts purple*/
-        /*write some stuff*/
-        /*how to make the year correct just as the page loads*/
+        /*write some ~more~ stuff*/
 
     </script>
-  <!--</body>-->
+
   </html>
