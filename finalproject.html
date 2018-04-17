@@ -200,11 +200,7 @@
     queue.awaitAll(function(error, dataArray) {
       geoJSONS = dataArray;
       proj.fitSize([600, 400], geoJSONS[12]);
-        // done loading!
-        jQuery(window).load(function(){
-        jQuery('#overlay').fadeOut();
-        });
-        //end
+      d3.select("#overlay").remove();
       redraw("108_to_112");
     });
 
