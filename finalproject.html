@@ -8,15 +8,19 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <style>
+
+
       div.a {
           text-align: center;
       }
+
+
 
       body {
       font-family: 'Oswald';font-size: 22px;
         }
 
-        /*trying to make the slider*/
+        /*the slider*/
 
           .slidecontainer {
             width: 100%;
@@ -77,6 +81,12 @@
         text-align: center;
         padding-top: 25%;
     }
+    #footer {
+        position: fixed;
+        bottom: 0;
+        left:0
+        width: 100%;
+      }
       </style>
       <div id="overlay">
           <!-- <img src="loader.gif" alt="Loading" /><br/> -->
@@ -97,15 +107,14 @@
 
     </div>
 
-    <p1>click along the slider to see the Virginia congressional district lines change over time from 1789 to 2003</p1>
+    <p1>click along the slider to see the Virginia congressional district lines and party affiliations change over time from 1789 to 2003</p1>
 
-    <!--trying this loader part II start-->
-    <!-- <script>
-      jQuery(window).load(function(){
-      jQuery('#overlay').fadeOut();
-      });
-    </script> -->
-    <!--trying this loader part II end-->
+    <div id="footer">
+    <p2><font size="1">Data from Jeffrey B. Lewis, Brandon DeVine, Lincoln Pitcher, and Kenneth C. Martis. (2013) Digital Boundary Definitions of U.S. Congressional Districts, 1789-2012. Retrieved from http://amypond.sscnet.ucla.edu/districts on [Jan. 13, 2018].</font></p2>
+    </div>
+
+    <p><small>Read further on recent events in Virginia redistricting at <a href="https://ballotpedia.org/Redistricting_in_Virginia#District_maps"><small>Ballotpedia</small></a></small></p>
+
 
   </body>
 
@@ -272,14 +281,9 @@
 
       };
 
-
-        /*add a loader*/
-        /*make the slider prettier*/
-        /*change the red stroke to black and color republicans red and dems blue and tied districts purple*/
-        /*is the gray a good idea?*/
         /*put a key*/
-        /*write some ~more~ stuff*/
-        /*include stuff about the earlier parties, the dixiecrat switch after the 1964 voting rights, the latest scuffle over redistircitng*/
+        /*write some ~more~ stuff -- ballottopia*/
+        /*cite the data*/
         /*check on 1933*/
 
     </script>
