@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Abortion Laws</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/ jquery-1.4.4.js"%3E%3C/script%3E'))</script>
+      <script src="polymaps.js"></script>
+       <script type="text/javascript" src="simulated.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <style>
+
+
+      div.a {
+          text-align: center;
+      }
+
+      body {
+      font-family: 'Oswald';font-size: 22px;
+        }
+
+    </style>
+
+  </head>
+
+
+  <body>
+
+    <h1>Abortion Laws by US State</h1>
+
+    <div class="a">
+
+    <svg id="map" width=600 height=400>
+        <rect width=600 height=400 fill="white"></rect>
+    </svg>
+
+    </div>
+
+    <div id="footer">
+    <p2><font size="1">Data from Jeffrey B. Lewis, Brandon DeVine, Lincoln Pitcher, and Kenneth C. Martis. (2013) Digital Boundary Definitions of U.S. Congressional Districts, 1789-2012. Retrieved from http://amypond.sscnet.ucla.edu/districts on [Mar. 13, 2018].</font></p2>
+    </div>
+
+    <p><small>write stuff here</p
+
+var po = org.polymaps;
+
+// Compute noniles.
+var quantile = pv.Scale.quantile()
+    .quantiles(9)
+    .domain(pv.values(states))
+    .range(0, 8);
+
+// Date format.
+var format = pv.Format.date("%B %e, %Y");
+
+var map = po.map()
+    .container(document.getElementById("map").appendChild(po.svg("svg")))
+    .center({lat: 40, lon: -95})
+    .zoomRange([3, 7])
+    .zoom(4)
+    .add(po.interact());
+
+map.add(po.image()
+    .url(po.url("http://{S}tile.cloudmade.com"
+    + "/1a1b06b230af4efdbb989ea99e9841af" // http://cloudmade.com/register
+    + "/20760/256/{Z}/{X}/{Y}.png")
+    .hosts(["a.", "b.", "c.", ""])));
+
+map.add(po.geoJson()
+    .url("http://polymaps.appspot.com/state/{Z}/{X}/{Y}.json")
+    .on("load", load))
+
+map.add(po.compass()
+    .pan("none"));
+
+map.container().setAttribute("class", "Blues");
+
+function load(e) {
+  for (var i = 0; i < e.features.length; i++) {
+    var feature = e.features[i], d = states[feature.data.id.substring(6)];
+    if (d == undefined) {
+      feature.element.setAttribute("display", "none");
+    } else {
+      feature.element.setAttribute("class", "q" + quantile(d) + "-" + 9);
+      feature.element.appendChild(po.svg("title").appendChild(
+          document.createTextNode(feature.data.properties.name + ": "
+          + format(d).replace(/ [ ]+/, " ")))
+          .parentNode);
+    }
+  }
+}
+</body>
+</html>

@@ -17,6 +17,7 @@
 
 
       body {
+      background-color: #f4f1de;
       font-family: 'Oswald';font-size: 22px;
         }
 
@@ -69,7 +70,7 @@
     <!--trying this loader START-->
     <style>
     #overlay {
-        background: #ffffff;
+        background: #f4f1de;
         color: #666666;
         position: fixed;
         height: 100%;
@@ -248,13 +249,13 @@
             }
           }
           if (republicans > democrats) {
-            return "red";
+            return "rgb(239, 35, 60)";
           }
           else if (democrats > republicans) {
-            return "blue";
+            return "rgb(102, 155, 188)";
           }
           else {
-            return "gray";
+            return "rgb(245, 243, 244)";
           }
         })
         .attr("stroke","black");

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Abortion Laws</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+     <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/ jquery-1.4.4.js"%3E%3C/script%3E'))</script>
+      <script src="polymaps.js"></script>
+       <script type="text/javascript" src="simulated.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <style>
+
+
+      div.a {
+          text-align: center;
+      }
+
+      body {
+      font-family: 'Oswald';font-size: 22px;
+        }
+
+        /*the slider*/
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <h1>Abortion Laws by US State</h1>
+
+    <div class="a">
+
+    <svg id="map" width=600 height=400>
+        <rect width=600 height=400 fill="white"></rect>
+    </svg>
+
+    </div>
+
+  
+
+  </body>
+
+    <script>
+
+    var districts = [
+      "1_to_2",
+      "108_to_112",
+    ];
+
+    var congress2year = {
+      "1_to_2":	1789,
+      "108_to_112": 2003
+    };
+
+    var queue = d3.queue();
+    districts.forEach(function(district) {
+      queue.defer(d3.json, "va-congressional-districts/Virginia_"+district+".geojson");
+    });
+
+
+
+    var proj = d3.geoMercator();
+
+    var pathGenerator = d3.geoPath()
+      .projection(proj);
+
+    var geoJSONS = [];
+    queue.awaitAll(function(error, dataArray) {
+      geoJSONS = dataArray;
+      proj.fitSize([600, 400], geoJSONS[12]);
+      d3.select("#overlay").remove();
+      redraw("108_to_112");
+    });
+
+    var svg = d3.select("#map");
+
+    function redraw(district) {
+
+      var index = districts.indexOf(district);
+      var geoJSON = geoJSONS[index];
+      console.log(district, index, geoJSON);
+
+      var updatePaths = svg.selectAll("path")
+        .data(geoJSON.features);
+
+      var enterPaths = updatePaths.enter()
+        .append("path");
+
+      updatePaths.merge(enterPaths)
+        .attr("d", function(d) {
+          return pathGenerator(d);
+        })
+        .attr("fill", function(d) {
+          var democrats = 0;
+          var republicans = 0;
+          var congresses = d.properties.member;
+          for (var congress in congresses) {
+            for (var person in congresses[congress]) {
+              var party = congresses[congress][person].party;
+              if (party == "Democrat") {
+                democrats += 1;
+              }
+              if (party == "Republican") {
+                republicans += 1;
+              }
+            }
+          }
+          if (republicans > democrats) {
+            return "red";
+          }
+          else if (democrats > republicans) {
+            return "blue";
+          }
+          else {
+            return "gray";
+          }
+        })
+        .attr("stroke","black");
+
+      updatePaths.exit().remove();
+    }
+
+        /*start slider*/
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        var districtmap = document.getElementById("map");
+        output.innerHTML = parseInt(slider.value) + 1971;
+        districtmap.innerHTML = districtmap.value;
+
+        slider.oninput = function() {
+          var year = parseInt(this.value, 10);
+          redraw(districts[year]);
+          output.innerHTML = congress2year[districts[year]];
+
+        //}
+
+        /*end slider*/
+
+
+      };
+
+        /*put a key*/
+        /*write some ~more~ stuff -- ballottopia*/
+        /*cite the data*/
+        /*check on 1933*/
+
+    </script>
+
+  </html>
